@@ -1,0 +1,196 @@
+Log day 17: feb 23, 2023
+
+* Type Inference: Type inference is the automatic deduction of the data types of specific expressions in a programming language, usually done at compile time.
+    * Type inference is the compile-time process of reconstructing missing type information in a program based on the usage of its variables
+* Dart supports both static and inference data types.
+* Late keyword: used for lazy initializaion, saves code from synchronous flow
+* Abstract class:
+    * can’t be instantiated (meaning no object can be made of an abstract class)
+    * abstract methods can only be made in abstract classes.
+    * can only be accessed through inheritence using extends
+    * we create abstract class when we don’t want for objects of that class to be created.
+    * example: authentication is an abstract class extended by both login and signup
+* Flutter is a Single codebase platform (meaning can be converted into multiple native appps including web)
+* Flutter was earlier called sky, introduced in 2015 dart developer summit
+* flutter 1.0 was Dec4, 2018 : update 1.12 was Dec 11, 2019
+* Widets types
+Material 	Cupertino
+can be used for both android and iOS	can only be used for iOS
+	
+*  flutter used by: google, bmw, tencent, alibaba, dream 11, ebay
+* Uses Skia Graphic Engine
+* supports Responsive layout
+* supports Hot Reload and Hot Restart
+* Minimum file size compared to other frameworks
+* Dart was introduced on 14th Nov, 2013
+* Data types:
+Data types	returns	size	upper limit	lower limit	methods
+int	64-bit signed two’s complement integer numbers	8 bit	-2^53	2^53	https://api.dart.dev/stable/2.18.4/dart-core/int-class.html#:~:text=The%20available%20integer%20values%20include,Dart%20code%20compiled%20to%20JavaScript.
+int?	64-bit signed two’s complement integer nullable numbers				
+double	64-bit (double-precision) floating numbers				
+double?	64-bit (double-precision) floating nullable numbers				
+num	inherited data type of the int and double types				
+String	sequence of UTF-16 code units (string literals)				
+String?	nullable sequence of UTF-16 code units (string literals)				
+bool	boolean value (true/false)				
+bool?	nullable boolean value (true/false/null)				
+List	collection of objects				
+List?	nullable collection of objects				
+set	collection of objects in which each object can occur only once				
+map	set of values as key-value pairs				
+rune	sequence of UTF-32 code units				
+symbol	opaque, dynamic string name used in reflecting out metadata from a library; an object representation of either an identifier or operator				
+var	creates a variable with inferred data type				will hold null value by default
+Object	a variable or instance of the class used to access the class's properties; have two features - state and behavior.				
+Object?	a nullable variable or instance of the class used to access the class's properties; have two features - state and behavior.				
+dynamic	can be used as a type annotation explicitly				
+
+* Type Conversion
+From 	To	Method	Use Case
+String	int	int.parse	int value = int.parse(“3000”);
+String	double	double.parse	double value = double.parse(“3.000”);
+int	String	.toString	String value = 3000.toString();
+double	String	.toString	String value = 3.000.toString();
+			
+* String Interpolation
+String	problem	solution1	solution 2	solution n
+‘It’s easy’	quotes under quotes (‘ ‘)	“It’s easy”	‘It\’s easy’	
+	concatination (+)	String str = ‘i love you’; print(str + ‘3000’);		
+	variable input	String name = “Udit Raj”; print(“My name is $name”);		
+	expression input	int a = 5; int b = 10; print(“the sum of a & b is ${a+b}.”);		
+* Variables and var keyword:
+    * var i = 20; will infer to integer type
+    * var i = “i love you 3000”; will infer to integer type. you can check this using print(i.runtimeType);
+    * var i = 20; in this case value of i is of integer data type can you cannot do i = “3000” ;
+    * var i ; i = 20; in this case value of i can be set to some other data type like i = “3000” ;
+* Dynamic keyword:
+    * can store implicitly any value during running the program. 
+    * unlike var we can do something like dynamic i = 20; i = “3000” ;
+* Var vs Dynamic
+var	dynamic
+variable once assigned, the type can not be changes.	variable type can change over time.
+	
+* Constants (const & final)
+const	final
+const variable can’t be reassigned a value.	final variable value can be set only ince.
+is a compilation time constant.	set once but it is initialzed when it is accessed.
+instance variable cannot be const; const instance variable can only be made using static.	instance variable can be final.
+ const variable must be initializd with a constant value.	final variable can be initialized using other variables.
+	
+* Conditionals (if-else)
+    * if(expression == true) return something;
+    * else return something else;
+* Loops (for loop)
+    * for(int  i = 0; i < n; i++) { print(i); }
+*  Loops (while loop)
+    * int i = 0; while(i < n) { print(i); i++; }
+* Loops (do while loop)
+    * int i = 5;
+    * do { print(i); i—; } while (i > 0);
+* Loops (while vs do-while)
+while	do-while
+won’t run the internal code if the conditional fails.	code will run atleast once even if the condition fails.
+void main() { var i = 10; while (i < 10) { print(“143”); i++; } }	void main() { var i = 10; do { print(“143”); i++; } while(i < 10); }
+* Break statement
+    * used with loops/conditionals like [below] to get out of loops/conditionals.
+void main() { for(int i = 0; i < 5; i++) { if(i == 2) { break; } print(i); } }
+* Continue statement
+    * used to skip an iteration like [below]
+void main() { for(int i = 0; i < 5; i++) { if(i == 2) { continue; } print(i); } }
+* Conditionals (Switch case)
+    * only takes constant as a case. 
+void main() { var vehicle = ‘car’; switch (vehicle) { case ‘car’: print(‘car’); break; case ‘bike’: print(‘bike’); break; case ‘truck’: print(‘truck’); break; default: print(‘not a valid car’); break; }}
+* Loops
+Loop	Detail 	Time (uncached)	Time (cached)	Time (reversed)	Time (regular)	Optimisation	Implementation
+for 		9.08ms	9.01ms	14.27ms		There are some optimisations for for or while loops that have been used in other languages such as JavaScript, for example: the caching of the length of the list and the reversing of the order of the loop.	num eachElement = 0;
+var length = list.length;
+for (var i = 0; i < length; i++) {
+  eachElement = pow(list[i], 3);
+}
+for in					22.70ms		num eachElement = 0;
+for (var element in list) {
+  eachElement = pow(element, 3);
+}
+for each					142.27ms		num eachElement = 0;
+list.forEach((element) {
+  eachElement = pow(element, 3);
+});
+while		9.14ms	9.65ms	14.57ms		There are some optimisations for for or while loops that have been used in other languages such as JavaScript, for example: the caching of the length of the list and the reversing of the order of the loop.	var count = 0;
+num eachElement = 0;
+while (count < list.length) {
+  eachElement = pow(list[count], 3);
+  count++;
+}
+do while							
+.map					487.77ms		num eachElement = 0;
+list.map((e) {
+  eachElement = pow(e, 3);
+}).toList();
+source:	https://itnext.io/comparing-darts-loops-which-is-the-fastest-731a03ad42a2						
+* Cached vs Uncached loop (caching in length - loops)
+Uncached	Cached
+	Caching the length of the list involves setting the length of the list we will be looping through to a variable before looping.
+var count = 0;
+num eachElement = 0;
+while (count < list.length) {
+  eachElement = pow(list[count], 3);
+  count++;
+}	var count = 0;
+num eachElement = 0;
+var length = list.length;
+while (count < length) {
+  eachElement = pow(list[count], 3);
+  count++;
+}
+	When we cache the length of a list before looping, the length of the list is calculated only once and not recalculated on each iteration. However, when we do not cache the length, the length is calculated per iteration. For lists with a large number of elements, this should have significant performance gains.
+**Note:	Reversing loop iteration will have similar effects.
+* Conditional Expressions/Operators
+    1. Condition ? expression 1 : expression 2; - goes to expression 1 if true else goes to expression 2.
+    2. 
+* x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Keywords
+Contextual Keywords	They’re valid identifiers everywhere.	Built-in Identifiers	These keywords are valid identifiers in most places, but they can’t be used as class or type names, or as import prefixes.	Reserved Words	can’t be identifiers.	Limited Reserved Words	related to asynchrony support
+async
+	an async function might perform time-consuming operations, it doesn’t wait for those operations. executes only until it encounters its first await expression. Then it returns a Future object, resuming execution only after the await expression completes.	abstract	Use the abstract modifier to define an abstract class—a class that can’t be instantiated. Abstract classes are useful for defining interfaces, often with some implementation; abstract class Doer {
+  // Define instance variables and methods...
+
+  void doSomething(); // Define an abstract method.
+}
+
+class EffectiveDoer extends Doer {
+  void doSomething() {
+    // Provide an implementation, so the method is not abstract here...
+  }
+}			You can’t use await or yield as an identifier in any function body marked with async, async*, or sync*.	
+hide	uses: selectively import the library, eferred loading (also called lazy loading); // Import all names EXCEPT foo.
+import 'package:lib2/lib2.dart' hide foo;	as	handy for checking types at runtime. Typecast (also used to specify library prefixes). Use the as operator to cast an object to a particular type if and only if you are sure that the object is of that type; (employee as Person).firstName = 'Bob';
+				
+on	Use on when you need to specify the exception type; try {
+  breedMoreLlamas();
+} on OutOfLlamasException {
+  buyMoreLlamas();
+}						
+sync	To implement a synchronous generator function, mark the function body as sync*; Iterable<int> naturalsTo(int n) sync* {
+  int k = 0;
+  while (k < n) yield k++;
+}						
+show	uses: selectively import the library, eferred loading (also called lazy loading); // Import only foo.
+import 'package:lib1/lib1.dart' show foo;						
+							
+							
