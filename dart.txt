@@ -1,0 +1,167 @@
+Log day 17: feb 23, 2023
+
+Dart :
+* Static type : meaning you cannot store string in int type variable. (Exception: dynamic)
+* supports var: type inference (type annotations are optional because Dart can infer types)
+* Compiled
+* Supports 2 types of compilation :
+    * AOT: Ahead Of Time
+    * JIT: Just In Time
+    * refer AOT & JIT
+AOT	JIT
+	
+* Comments
+Single Line Comment	Multi Line Comment	Documentation Comment
+A single-line comment begins with //	A multi-line comment begins with /* and ends with */	Documentation comments are multi-line or single-line comments that begin with /// or /**
+Everything between // and the end of line is ignored by the Dart compiler	Everything between /* and */ is ignored by the Dart compiler (unless the comment is a documentation comment; see the next section)	Using /// on consecutive lines has the same effect as a multi-line doc comment
+	Multi-line comments can nest	Inside a documentation comment, the analyzer ignores all text unless it is enclosed in brackets
+		Using brackets, you can refer to classes, methods, fields, top-level variables, functions, and parameters
+		The names in brackets are resolved in the lexical scope of the documented program element
+Example:		
+void main() {  // TODO: refactor into an AbstractLlamaGreetingFactory? print('Welcome to my Llama farm!'); }	void main() {
+  /*
+   * This is a lot of work. Consider raising chickens.
+
+  Llama larry = Llama();
+  larry.feed();
+  larry.exercise();
+  larry.clean();
+   */
+}	/// A domesticated South American camelid (Lama glama).
+///
+/// Andean cultures have used llamas as meat and pack
+/// animals since pre-Hispanic times.
+///
+/// Just like any other animal, llamas need to eat,
+/// so don't forget to [feed] them some [Food].
+class Llama {
+  String? name;
+
+  /// Feeds your llama [food].
+  ///
+  /// The typical llama eats one bale of hay per week.
+  void feed(Food food) {
+    // ...
+  }
+
+  /// Exercises your llama with an [activity] for
+  /// [timeLimit] minutes.
+  void exercise(Activity activity, int timeLimit) {
+    // ...
+  }
+}
+
+* Everything you can place in a variable is an object, and every object is an instance of a class. Even numbers, functions, and null are objects.
+* Null Safety
+Null Safety 	before	after
+https://dart.dev/null-safety	var i = 42; // Inferred to be an int	// In null-safe Dart, none of these can ever be null.
+		unless you say they can be using ?
+When you opt in to null safety, all types are non-nullable by default	void main() {
+  int a;
+  a = null;
+  print('a is $a.');
+}	void main() { int? a; a = null; print('a is $a.'); }
+	error: line 3 • A value of type 'Null' can't be assigned to a variable of type 'int'. (view docs) Try changing the type of the variable, or casting the right-hand type to 'int'.	no issue
+	Earlier, int a; print(a); returned null	  later, int a; print(a); returned Error compiling to JavaScript:
+Info: Compiling with sound null safety.
+lib/main.dart:3:7:
+Error: The value 'null' can't be assigned to a variable of type 'int' because 'int' is not nullable.
+  a = null;
+      ^
+Error: Compilation failed.
+	int a; a++; print(a); returned CWE-476 Null Pointer Dereference	int a; a++; print(a); returned Error compiling to JavaScript:
+Info: Compiling with sound null safety.
+lib/main.dart:3:7:
+Error: The value 'null' can't be assigned to a variable of type 'int' because 'int' is not nullable.
+  a = null;
+      ^
+Error: Compilation failed.
+		int? a; print('a is $a.'); returns a is null.
+		int? a; a = null;  a++; print('a is $a.'); returns Error compiling to JavaScript:
+Info: Compiling with sound null safety.
+lib/main.dart:4:4:
+Error: Operator '+' cannot be called on 'int?' because it is potentially null.
+  a++;
+   ^
+lib/main.dart:4:4:
+Error: A value of type 'num' can't be assigned to a variable of type 'int?'.
+  a++;
+   ^
+Error: Compilation failed.
+		If you’re sure that an expression with a nullable type isn’t null, you can use a null assertion operator (!) to make Dart treat it as non-nullable.
+		If you’re wrong, Dart throws an exception at run-time. This makes the ! operator unsafe, so don’t use it unless you’re very sure that the expression isn’t null.
+		int? b = listThatCouldHoldNulls.first; // first item in the list. int c = couldReturnNullButDoesnt()!.abs(); // absolute value
+		  example : int? couldReturnNullButDoesnt() => -3;
+
+void main() {
+  int? couldBeNullButIsnt = 1;
+  List<int?> listThatCouldHoldNulls = [2, null, 4];
+
+  int a = couldBeNullButIsnt;
+  int? b = listThatCouldHoldNulls.first; // first item in the list
+  int c = couldReturnNullButDoesnt()!.abs(); // absolute value
+
+  print('a is $a.');
+  print('b is $b.');
+  print('c is $c.');
+}
+If based on the flow of the program, you know the value of an expression isn’t null, you can use the null assertion operator (!), but that will throw an exception if the value is null.		To handle potentially null values you can instead use the conditional property access operator (?.) or null-coalescing operators (??) to conditionally access a property or provide a default value if null respectively.
+
+* With sound null safety, Dart’s flow analysis has been extended to take nullability into account. Nullable variables that can’t possibly contain null values are treated like non-nullable variables. This behavior is called type promotion.
+* Null-coalescing operators:
+    * // Both of the following print out 'alternate' if nullableString is null
+    * print(nullableString ?? 'alternate');
+    * print(nullableString != null ? nullableString : 'alternate');
+* You can also use the null-coalescing assignment operator (??=) to evaluate and assign an expression result to a variable only if that variable is currently null.
+    * // Both of the following set nullableString to 'alternate' if it is null
+    * nullableString ??= 'alternate';
+    * nullableString = nullableString != null ? nullableString : 'alternate';
+* Late keyword: fields in a class, or top-level variables—should be non-nullable, but they can’t be assigned a value immediately. For cases like that, use the late keyword.
+    * If you declare a variable late and the variable is read before it’s assigned a value, an error is thrown.
+    * Initialization expressions for late fields can use instance methods in their initializers.
+* Data type
+Strongly typed	Dynamic typed
+variable is known at compile time	variable is knows at run time
+example: String, int etc.	example: var, Object, dynamic etc.
+languages to support them: C++, Java, Swift	languages to support them: Python, Ruby, Js
+are: int, double ,String, bool	are:Object?, Object, dynamic 
+	
+* defer type checking until runtime—the special type dynamic
+* Two types in Dart permit all values: Object? and dynamic. However, they convey different things. If you simply want to state that you allow all objects, use Object?. If you want to allow all objects except null, then use Object.
+* The type dynamic not only accepts all objects, but it also permits all operations. 
+* Unlike Java, Dart doesn’t have the keywords public, protected, and private. If an identifier starts with an underscore (_), it’s private to its library. For details, see Libraries and visibility.
+* Identifiers can start with a letter or underscore (_), followed by any combination of those characters plus digits.
+* Dart has both expressions (which have runtime values) and statements (which don’t). For example, the conditional expression condition ? expr1 : expr2 has a value of expr1 or expr2. Compare that to an if-else statement, which has no value. A statement often contains one or more expressions, but an expression can’t directly contain a statement.
+* Dart tools can report two kinds of problems: warnings and errors. Warnings are just indications that your code might not work, but they don’t prevent your program from executing. Errors can be either compile-time or run-time. A compile-time error prevents the code from executing at all; a run-time error results in an exception being raised while the code executes.
+* Keywords
+Contextual Keywords	They’re valid identifiers everywhere.	Built-in Identifiers	These keywords are valid identifiers in most places, but they can’t be used as class or type names, or as import prefixes.	Reserved Words	can’t be identifiers.	Limited Reserved Words	related to asynchrony support
+async
+	an async function might perform time-consuming operations, it doesn’t wait for those operations. executes only until it encounters its first await expression. Then it returns a Future object, resuming execution only after the await expression completes.	abstract	Use the abstract modifier to define an abstract class—a class that can’t be instantiated. Abstract classes are useful for defining interfaces, often with some implementation; abstract class Doer {
+  // Define instance variables and methods...
+
+  void doSomething(); // Define an abstract method.
+}
+
+class EffectiveDoer extends Doer {
+  void doSomething() {
+    // Provide an implementation, so the method is not abstract here...
+  }
+}			You can’t use await or yield as an identifier in any function body marked with async, async*, or sync*.	
+hide	uses: selectively import the library, eferred loading (also called lazy loading); // Import all names EXCEPT foo.
+import 'package:lib2/lib2.dart' hide foo;	as	handy for checking types at runtime. Typecast (also used to specify library prefixes). Use the as operator to cast an object to a particular type if and only if you are sure that the object is of that type; (employee as Person).firstName = 'Bob';
+				
+on	Use on when you need to specify the exception type; try {
+  breedMoreLlamas();
+} on OutOfLlamasException {
+  buyMoreLlamas();
+}						
+sync	To implement a synchronous generator function, mark the function body as sync*; Iterable<int> naturalsTo(int n) sync* {
+  int k = 0;
+  while (k < n) yield k++;
+}						
+show	uses: selectively import the library, eferred loading (also called lazy loading); // Import only foo.
+import 'package:lib1/lib1.dart' show foo;						
+							
+							
+
+
