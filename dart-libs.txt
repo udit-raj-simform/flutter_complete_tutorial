@@ -1,0 +1,6 @@
+Dart Libs
+
+1. dart:io
+    * stdout.writeln(); - for console output
+    * stdin.readLineSync(); - for console input
+2. x
